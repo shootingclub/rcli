@@ -1,3 +1,3 @@
 mod csv_convert;
 
-pub use self::{csv_convert::process_csv};
+pub use self::csv_convert::process_csv;
