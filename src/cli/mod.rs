@@ -1,9 +1,8 @@
 mod csv;
-
 use clap::Parser;
-pub use self::{csv::*};
 use crate::CmdExec;
 use enum_dispatch::enum_dispatch;
+use crate::cli::csv::CsvOpts;
 
 
 #[derive(Debug, Parser)]
