@@ -1,6 +1,5 @@
 use clap::Parser;
 use std::path::{Path};
-use crate::CmdExec;
 
 #[derive(Debug, Parser)]
 pub struct CsvOpts {
@@ -25,9 +24,4 @@ fn verify_input_file(filename: &str) -> Result<String, &'static str> {
     }
 }
 
-impl CmdExec for CsvOpts {
-    fn execute(self) -> anyhow::Result<()> {
-        crate::process_csv(&self.input, &self.output)
-    }
-}
 

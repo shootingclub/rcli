@@ -1,7 +1,7 @@
 mod csv;
+
 use clap::Parser;
 use crate::CmdExec;
-use enum_dispatch::enum_dispatch;
 use crate::cli::csv::CsvOpts;
 
 
@@ -13,8 +13,18 @@ pub struct Opts {
 }
 
 #[derive(Debug, Parser)]
-#[enum_dispatch(CmdExec)]
 pub enum SubCommand {
     #[command(name = "csv", about = "Show CSV, or convert CSV to other formats")]
     Csv(CsvOpts),
 }
+
+impl CmdExec for SubCommand {
+    fn execute(self) -> anyhow::Result<()> {
+        return match self {
+            SubCommand::Csv(opts) => {
+                crate::process_csv(&opts.input, &opts.output)
+            }
+        };
+    }
+}
+
