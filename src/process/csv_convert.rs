@@ -3,7 +3,6 @@ use csv::Reader;
 use serde::{Deserialize, Serialize};
 use std::fs;
 
-
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "PascalCase")]
 struct Player {
@@ -15,7 +14,6 @@ struct Player {
     #[serde(rename = "Kit Number")]
     kit: u8,
 }
-
 
 pub fn process_csv(input: &str, output: &str) -> Result<()> {
     let mut reader = Reader::from_path(input)?;
@@ -39,4 +37,3 @@ pub fn process_csv(input: &str, output: &str) -> Result<()> {
     fs::write(output, json)?;
     Ok(())
 }
-

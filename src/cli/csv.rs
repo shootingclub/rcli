@@ -1,5 +1,5 @@
 use clap::Parser;
-use std::path::{Path};
+use std::path::Path;
 
 #[derive(Debug, Parser)]
 pub struct CsvOpts {
@@ -23,5 +23,3 @@ fn verify_input_file(filename: &str) -> Result<String, &'static str> {
         Err("File does not exist")
     }
 }
-
-
