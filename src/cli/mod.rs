@@ -19,8 +19,8 @@ pub enum SubCommand {
 
 impl CmdExec for SubCommand {
     fn execute(self) -> anyhow::Result<()> {
-        return match self {
+        match self {
             SubCommand::Csv(opts) => crate::process_csv(&opts.input, &opts.output),
-        };
+        }
     }
 }
