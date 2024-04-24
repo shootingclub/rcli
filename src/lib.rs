@@ -1,5 +1,12 @@
-mod opts;
+pub mod cli;
 mod process;
 
-pub use opts::{Opts, SubCommand};
-pub use process::process_csv;
+pub use cli::*;
+use enum_dispatch::enum_dispatch;
+pub use process::*;
+
+
+#[enum_dispatch]
+pub trait CmdExec {
+    fn execute(self) -> anyhow::Result<()>;
+}

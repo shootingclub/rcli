@@ -1,26 +1,6 @@
 use clap::Parser;
-use std::path::{Path, PathBuf};
-
-#[derive(Debug, Parser)]
-#[command(name = "rcli", version, author, about, long_about = None)]
-pub struct Opts {
-    pub name: Option<String>,
-
-    #[arg(short, long, value_name = "FILE")]
-    pub config: Option<PathBuf>,
-
-    #[arg(short, long, action = clap::ArgAction::Count)]
-    pub debug: u8,
-
-    #[command(subcommand)]
-    pub cmd: SubCommand,
-}
-
-#[derive(Debug, Parser)]
-pub enum SubCommand {
-    #[command(name = "csv", about = "Show CSV, or convert CSV to other formats")]
-    Csv(CsvOpts),
-}
+use std::path::{Path};
+use crate::CmdExec;
 
 #[derive(Debug, Parser)]
 pub struct CsvOpts {
@@ -44,3 +24,10 @@ fn verify_input_file(filename: &str) -> Result<String, &'static str> {
         Err("File does not exist")
     }
 }
+
+impl CmdExec for CsvOpts {
+    fn execute(self) -> anyhow::Result<()> {
+        crate::process_csv(&self.input, &self.output)
+    }
+}
+
