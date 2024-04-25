@@ -1,6 +1,8 @@
 pub mod csv;
+pub mod genpass;
 
 use crate::cli::csv::{CsvOpts, OutPutFormat};
+use crate::genpass::GenPassOpts;
 use crate::CmdExec;
 use clap::Parser;
 use std::path::Path;
@@ -17,6 +19,8 @@ pub struct Opts {
 pub enum SubCommand {
     #[command(name = "csv", about = "Show CSV, or convert CSV to other formats")]
     Csv(CsvOpts),
+    #[command(name = "genpass", about = "Generate password")]
+    GenPass(GenPassOpts),
 }
 
 impl CmdExec for SubCommand {
@@ -30,6 +34,7 @@ impl CmdExec for SubCommand {
                 };
                 crate::process_csv(&opts.input, output, opts.format)
             }
+            SubCommand::GenPass(opts) => crate::process_genpass(opts),
         }
     }
 }
