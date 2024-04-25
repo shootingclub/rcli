@@ -46,6 +46,8 @@ fn parse_format(format: &str) -> Result<OutPutFormat, anyhow::Error> {
     format.parse::<OutPutFormat>()
 }
 
+//From OutPutFormat 转化为 &'static str
+//From 与 Into 是一对trait 实现了From 就可以使用Into
 impl From<OutPutFormat> for &'static str {
     fn from(format: OutPutFormat) -> Self {
         match format {
