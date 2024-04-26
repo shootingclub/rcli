@@ -15,12 +15,12 @@ pub fn process_base64(base64: Base64SubCmd) -> anyhow::Result<()> {
 
 fn encode(input: &str, format: Base64Format) -> anyhow::Result<()> {
     let mut buf = Vec::new();
-    if input == "-" {
-        std::io::stdin().read_to_end(&mut buf)?
+    let mut read: Box<dyn Read> = if input == "-" {
+        Box::new(std::io::stdin())
     } else {
-        let mut file = File::open(input)?;
-        file.read_to_end(&mut buf)?
+        Box::new(File::open(input)?)
     };
+    read.read_to_end(&mut buf)?;
     println!("{:?}", &buf);
 
     match format {
@@ -38,12 +38,12 @@ fn encode(input: &str, format: Base64Format) -> anyhow::Result<()> {
 
 fn decode(input: &str, format: Base64Format) -> anyhow::Result<()> {
     let mut buf = Vec::new();
-    if input == "-" {
-        std::io::stdin().read_to_end(&mut buf)?
+    let mut read: Box<dyn Read> = if input == "-" {
+        Box::new(std::io::stdin())
     } else {
-        let mut file = File::open(input)?;
-        file.read_to_end(&mut buf)?
+        Box::new(File::open(input)?)
     };
+    read.read_to_end(&mut buf)?;
     match format {
         Base64Format::Standard => {
             println!("decode Standard {}", input);
