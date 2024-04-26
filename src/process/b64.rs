@@ -58,3 +58,15 @@ fn decode(input: &str, format: Base64Format) -> anyhow::Result<()> {
     };
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_process_encode() -> anyhow::Result<()> {
+        let input = "Cargo.toml";
+        assert!(self::encode(input, Base64Format::Standard).is_ok());
+        Ok(())
+    }
+}
