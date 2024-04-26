@@ -15,5 +15,7 @@ anyhow = "1.0.82"
 enum_dispatch = "0.3.12"
 log = "0.4.21"
 rand = "0.8.5"
+zxcvbn = "2.2.2"
+base64 = "0.22.0"
 
 

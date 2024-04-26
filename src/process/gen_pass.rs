@@ -1,18 +1,19 @@
 use crate::genpass::GenPassOpts;
 use crate::{PASSWORD_LOWER, PASSWORD_NUMBER, PASSWORD_SYMBOL, PASSWORD_UPPER};
 use rand::prelude::SliceRandom;
+use zxcvbn::zxcvbn;
 
 pub fn process_genpass(opts: GenPassOpts) -> anyhow::Result<()> {
     let mut rng = rand::thread_rng();
     let mut password = Vec::new();
     let mut chars = Vec::new();
-    if opts.uppercase {
+    if opts.no_uppercase {
         chars.extend_from_slice(PASSWORD_UPPER);
     }
-    if opts.lowercase {
+    if opts.no_lowercase {
         chars.extend_from_slice(PASSWORD_LOWER);
     }
-    if opts.number {
+    if opts.no_number {
         chars.extend_from_slice(PASSWORD_NUMBER);
     }
     if opts.symbol {
@@ -27,7 +28,8 @@ pub fn process_genpass(opts: GenPassOpts) -> anyhow::Result<()> {
 
     // println!("{:?}", String::from_utf8(password.clone()).unwrap());
     password.shuffle(&mut rng);
-    println!("{:?}", String::from_utf8(password.clone()).unwrap());
-
+    let password = String::from_utf8(password).unwrap();
+    let estimate = zxcvbn(&password, &[]).unwrap();
+    println!("密码：{} 强度：{}", password, estimate.score());
     Ok(())
 }

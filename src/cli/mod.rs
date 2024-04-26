@@ -1,6 +1,8 @@
+mod b64;
 pub mod csv;
 pub mod genpass;
 
+pub use crate::cli::b64::{Base64Format, Base64SubCmd};
 use crate::cli::csv::{CsvOpts, OutPutFormat};
 use crate::genpass::GenPassOpts;
 use crate::CmdExec;
@@ -21,6 +23,8 @@ pub enum SubCommand {
     Csv(CsvOpts),
     #[command(name = "genpass", about = "Generate password")]
     GenPass(GenPassOpts),
+    #[command(subcommand)]
+    Base64(Base64SubCmd),
 }
 
 impl CmdExec for SubCommand {
@@ -35,12 +39,13 @@ impl CmdExec for SubCommand {
                 crate::process_csv(&opts.input, output, opts.format)
             }
             SubCommand::GenPass(opts) => crate::process_genpass(opts),
+            SubCommand::Base64(opts) => crate::process_base64(opts),
         }
     }
 }
 
 fn verify_input_file(filename: &str) -> Result<String, &'static str> {
-    if Path::new(filename).exists() {
+    if filename == "-" || Path::new(filename).exists() {
         Ok(filename.into())
     } else {
         Err("File does not exist")
