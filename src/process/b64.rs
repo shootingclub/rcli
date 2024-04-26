@@ -21,11 +21,12 @@ fn encode(input: &str, format: Base64Format) -> anyhow::Result<()> {
         let mut file = File::open(input)?;
         file.read_to_end(&mut buf)?
     };
+    println!("{:?}", &buf);
 
     match format {
         Base64Format::Standard => {
             println!("encode Standard {}", input);
-            println!("{}", STANDARD.encode(buf));
+            println!("{}", STANDARD.encode(&buf));
         }
         Base64Format::UrlSafe => {
             println!("encode UrlSafe {}", input);
@@ -36,16 +37,23 @@ fn encode(input: &str, format: Base64Format) -> anyhow::Result<()> {
 }
 
 fn decode(input: &str, format: Base64Format) -> anyhow::Result<()> {
+    let mut buf = Vec::new();
+    if input == "-" {
+        std::io::stdin().read_to_end(&mut buf)?
+    } else {
+        let mut file = File::open(input)?;
+        file.read_to_end(&mut buf)?
+    };
     match format {
         Base64Format::Standard => {
             println!("decode Standard {}", input);
-            let res = STANDARD.decode(input)?;
-            String::from_utf8(res)?
+            let res = STANDARD.decode(&buf)?;
+            println!("{}", String::from_utf8(res).unwrap())
         }
         Base64Format::UrlSafe => {
             println!("decode UrlSafe {}", input);
-            let res = URL_SAFE_NO_PAD.decode(input)?;
-            String::from_utf8(res)?
+            let res = URL_SAFE_NO_PAD.decode(&buf)?;
+            println!("{}", String::from_utf8(res).unwrap())
         }
     };
     Ok(())

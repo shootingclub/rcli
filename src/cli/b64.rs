@@ -21,7 +21,7 @@ pub struct Base64EncodeOpts {
     #[arg(short, long, value_parser = verify_input_file, default_value = "-")]
     pub input: String,
 
-    #[arg(short, long, default_value = "standard")]
+    #[arg(long, default_value = "standard")]
     pub format: Base64Format,
 }
 
@@ -30,7 +30,7 @@ pub struct Base64DecodeOpts {
     #[arg(short, long, value_parser = verify_input_file, default_value = "-")]
     pub input: String,
 
-    #[arg(short, long, default_value = "standard")]
+    #[arg(long, default_value = "standard")]
     pub format: Base64Format,
 }
 
